@@ -14,9 +14,14 @@
     "@tanstack/react-query-devtools": "^5.0.1",
     "add": "^2.0.6",
     "axios": "^1.5.1",
+    "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
+    "react-leaflet-cluster": "^2.1.0",
+    "react-router-dom": "^6.17.0",
     "react-tailwindcss-select": "^1.8.5",
+    "react-uuid": "^2.0.0",
     "yarn": "^1.22.19"
   },
   "devDependencies": {

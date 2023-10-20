@@ -1,16 +1,19 @@
+import TableComponent from "./tablecomponent";
 
-
-const Table = ({headers, data}) => {
+const Table = ({ data }) => {
+  if (!data?.length) {
+    return (
+      <section className="flex justify-center items-center overflow-scroll w-full h-screen border-2">
+        <p className="text-3xl">No hay resultados para esta busqueda</p>
+      </section>
+    );
+  }
 
   return (
-        <table>
-            <thead>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-  )
-}
+    <section className="overflow-scroll h-full border-2">
+      <TableComponent data={data} />
+    </section>
+  );
+};
 
-
-export default Table
+export default Table;
