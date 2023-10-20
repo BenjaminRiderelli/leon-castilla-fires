@@ -8,7 +8,7 @@ export const arrayToWhereString = (arr) => {
 
   const filteredArr = arr.filter(str => str !== "")
 
-  const string = filteredArr.join(",").replace(/,/gi, " or ")
+  const string = filteredArr.join(",").replace(/,/gi, " AND ")
 
   return string
 }
