@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAllFiresQuery } from "../../hooks/datafetch/fireQuery";
-import { LEON_DE_CASTILLA_PROVINCES } from "../../utils/constants";
-import { arrayToQueryString, arrayToWhereString } from "../../utils/utils";
+import { DEFAULT_QUERY } from "../../utils/constants";
 import Filter from "./filter";
 
 const exampleGeo =
@@ -11,7 +10,7 @@ const MainComponent = () => {
 
   const [params, setParams] = useState({
     limit: 100,
-    where: "",
+    where: DEFAULT_QUERY,
   });
 
   const onSuccess = (payload) => {
@@ -24,15 +23,11 @@ const MainComponent = () => {
 
   const queryParams = {
     onSuccess: onSuccess,
-    onError: (error) => {
-      console.log(error);
-    },
+    onError: onError,
     queryParams: { ...params },
   };
 
   const { data, error } = useAllFiresQuery(queryParams);
-
-  console.log(data?.data.results[0])
 
   return (
     <section>
@@ -40,6 +35,8 @@ const MainComponent = () => {
       <Filter
       setQuery={{params, setParams}}
       />
+
+      {JSON.stringify(data?.data.results)}
     </section>
   );
 };
