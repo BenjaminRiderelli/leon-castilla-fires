@@ -30,12 +30,63 @@ const Filter = ({ setQuery }) => {
   const queryParamsProvince = {
     onSuccess: onSuccess,
     onError: onError,
-    queryParams: {limit:100, group_by:"provincia" },
+    queryParams: { limit: 100, group_by: "provincia" },
   };
 
+  const queryParamsCurrentStatus = {
+    onSuccess: onSuccess,
+    onError: onError,
+    queryParams: {
+      limit: 100,
+      where: whereString,
+      group_by: "situacion_actual",
+    },
+  };
 
-  const {data:provincesArray} = useAllFiresQuery(queryParamsProvince)
-  const provinceOptions = provincesArray?.data.results.map(prov=> prov.provincia)
+  const queryParamsProbableCause = {
+    onSuccess: onSuccess,
+    onError: onError,
+    queryParams: {
+      limit: 100,
+      where: whereString,
+      group_by: "causa_probable",
+    },
+  };
+
+  const { data: provincesData, isLoading: provincesIsLoading } =
+    useAllFiresQuery(queryParamsProvince);
+  const provincesArr = provincesData?.data.results.map(
+    (prov) => prov.provincia
+  );
+  const provincesOption = provincesIsLoading ? [] : provincesArr;
+
+  const {
+    data: currentSituationData,
+    isLoading: currentSituationArrIsLoading,
+  } = useAllFiresQuery(queryParamsCurrentStatus);
+  const currentSituationArr = currentSituationData?.data.results.map((el) => {
+    if (el.situacion_actual) {
+      return { label: el.situacion_actual, value: el.situacion_actual };
+    } else {
+      return { label: "", value: "" };
+    }
+  });
+  const currentSituationOptions = currentSituationArrIsLoading
+    ? []
+    : currentSituationArr;
+
+  const { data: probableCauseData, isLoading: probableCauseDataIsLoading } =
+    useAllFiresQuery(queryParamsProbableCause);
+  const probableCauseArr = probableCauseData?.data.results.map((el) => {
+    if (el.causa_probable) {
+      return { label: el.causa_probable, value: el.causa_probable };
+    } else {
+      return { label: "", value: "" };
+    }
+  });
+  const probableCauseOptions = probableCauseDataIsLoading
+    ? []
+    : probableCauseArr;
 
 
   useEffect(() => {
