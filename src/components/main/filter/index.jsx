@@ -8,7 +8,7 @@ import {
 import Select from "react-tailwindcss-select";
 
 const Filter = ({ setQuery }) => {
-  //params is the final query params going in the request
+  //query params going in the request
   const { params, setParams } = setQuery;
 
   const [selectedProvince, setSelectedProvince] = useState(EMPTY_SELECT);
@@ -16,8 +16,10 @@ const Filter = ({ setQuery }) => {
     useState(EMPTY_SELECT);
   const [selectedCurrentSituation, setSelectedCurrentSituation] =
     useState(EMPTY_SELECT);
-
   const [maxLevelReached, setMaxLevelReached] = useState("");
+  const [textSearch, setTextSearch] = useState("");
+
+  //This is the actual string sent to the backend in the params.where field
   const [whereString, setWhereString] = useState();
 
   const provincesOption = [EMPTY_SELECT, ...getAllOptions("provincia")];
@@ -38,10 +40,14 @@ const Filter = ({ setQuery }) => {
     const maxLevelReachedStr = maxLevelReached
       ? `nivel_maximo_alcanzado=${maxLevelReached}`
       : "";
+    const textSearchString = textSearch
+      ? `suggest(situacion_actual, provincia, causa_probable, "${textSearch}")`
+      : "";
 
     setWhereString(
       arrayToWhereString([
         DEFAULT_QUERY,
+        textSearchString,
         provinceString,
         probableCauseString,
         currentSituationString,
@@ -53,8 +59,17 @@ const Filter = ({ setQuery }) => {
     selectedProbableCause,
     selectedCurrentSituation,
     maxLevelReached,
+    textSearch,
   ]);
 
+  const handleChange = (e, setState) => {
+    const { value, name } = e.target;
+    if (value) {
+      setState(value);
+    } else {
+      setState("");
+    }
+  };
   return (
     <form
       onSubmit={(e) => {
@@ -62,10 +77,22 @@ const Filter = ({ setQuery }) => {
       }}
     >
       <label>
-        <p htmlFor="provinces">Provincia</p>
+        <p htmlFor="búsqueda_de_texto">Búsqueda de texto</p>
+        <input
+          className="border-2 border-black"
+          type="text"
+          id="búsqueda_de_texto"
+          name="búsqueda_de_texto"
+          value={textSearch}
+          onChange={(e) => handleChange(e, setTextSearch)}
+        />
+      </label>
+      <label>
+        <p htmlFor="provincia">Provincia</p>
         <Select
+          id="provincia"
           options={provincesOption}
-          name="causa_probable"
+          name="provincia"
           value={selectedProvince}
           onChange={(e) => {
             setSelectedProvince(e);
@@ -98,18 +125,11 @@ const Filter = ({ setQuery }) => {
         <p htmlFor="nivel_maximo_alcanzado">Nivel Máximo alcanzado</p>
         <input
           className="border-2 border-black"
-          type="text"
+          type="number"
           id="nivel_maximo_alcanzado"
           name="nivel_maximo_alcanzado"
           value={maxLevelReached}
-          onChange={(e) => {
-            const { value, name } = e.target;
-            if (value) {
-              setMaxLevelReached(value);
-            } else {
-              setMaxLevelReached("");
-            }
-          }}
+          onChange={(e) => handleChange(e, setMaxLevelReached)}
         />
       </label>
 
