@@ -37,7 +37,6 @@ const Filter = ({ setQuery }) => {
   const {data:provincesArray} = useAllFiresQuery(queryParamsProvince)
   const provinceOptions = provincesArray?.data.results.map(prov=> prov.provincia)
 
-  console.log(provinceOptions)
 
   useEffect(() => {
     const provinceString = arrayToQueryString(provinces, "provincia");
