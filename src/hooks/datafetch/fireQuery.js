@@ -1,9 +1,6 @@
 import { api } from "./api";
 import { useQuery } from "@tanstack/react-query";
-import { DEFAULT_QUERY } from "../../utils/constants";
-
-const yearFilter = new Date().getFullYear() - 2;
-const emptyOption = { label: "Select...", value: "" };
+import { DEFAULT_QUERY,EMPTY_SELECT } from "../../utils/constants";
 
 export const getFires = (params) => {
   return api.get("", { params: params });
@@ -38,9 +35,9 @@ export const getAllOptions = (propertyStr) => {
     if (el[propertyStr]) {
       return { label: el[propertyStr], value: el[propertyStr] };
     } else {
-      return emptyOption;
+      return EMPTY_SELECT;
     }
   });
-  const selectedOptions = isLoading ? [] : [...optionsArr];
+  const selectedOptions = isLoading ? [] : optionsArr;
   return selectedOptions;
 };
