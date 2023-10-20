@@ -4,7 +4,7 @@ import NotFound from "../../components/notfound";
 import { DEFAULT_QUERY } from "../../utils/constants";
 import Filter from "../../components/main/filter";
 import Table from "../../components/main/table";
-import Spinner from "../../components/spinner/spinner";
+
 import Map from "../../components/main/map";
 import { Route, Routes } from "react-router-dom";
 
@@ -15,6 +15,7 @@ const MainPage = () => {
   const [params, setParams] = useState({
     limit: 100,
     where: DEFAULT_QUERY,
+    order_by: "fecha_del_parte DESC",
   });
 
   const onSuccess = (payload) => {
@@ -40,7 +41,11 @@ const MainPage = () => {
     <section className="flex flex-col md:flex-row gap-8 md:gap-0 h-screen overflow-hidden">
       <Filter setQuery={{ params, setParams }} />
       <Routes>
-        <Route exact path="/" element={<Table data={results} />} />
+        <Route
+          exact
+          path="/"
+          element={<Table data={results} isLoading={isLoading} />}
+        />
         <Route path="/map" element={<Map locations={locations} />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>

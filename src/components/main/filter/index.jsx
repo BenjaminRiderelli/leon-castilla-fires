@@ -1,27 +1,42 @@
 import { useEffect, useState } from "react";
-import { DEFAULT_QUERY, EMPTY_SELECT } from "../../../utils/constants";
-import { arrayToWhereString, calculateBoundingBox } from "../../../utils/utils";
+import { DEFAULT_QUERY } from "../../../utils/constants";
+import {
+  arrayToWhereString,
+  calculateBoundingBox,
+  getCoordenates,
+} from "../../../utils/utils";
 import { getAllOptions } from "../../../hooks/datafetch/fireQuery";
 import Select from "react-tailwindcss-select";
 import { NavLink } from "react-router-dom";
+import {
+  setStorageObject,
+  getStorageObject,
+} from "../../../utils/localStorageutils";
 
 const Filter = ({ setQuery }) => {
   //query params going in the request
   const { params, setParams } = setQuery;
+  const filterConfig = getStorageObject("filterConfig");
 
-  const [selectedProvince, setSelectedProvince] = useState();
-  const [selectedProbableCause, setSelectedProbableCause] =
-    useState();
-  const [selectedCurrentSituation, setSelectedCurrentSituation] =
-    useState();
-  const [maxLevelReached, setMaxLevelReached] = useState("");
-  const [textSearch, setTextSearch] = useState("");
-  const [coordenates, setCoordenates] = useState("");
+  const [selectedProvince, setSelectedProvince] = useState(
+    filterConfig.selectedProvince 
+  );
+  const [selectedProbableCause, setSelectedProbableCause] = useState(
+    filterConfig.selectedProbableCause
+  );
+  const [selectedCurrentSituation, setSelectedCurrentSituation] = useState(
+    filterConfig.selectedCurrentSituation
+  );
+  const [maxLevelReached, setMaxLevelReached] = useState(
+    filterConfig.maxLevelReached ?? ""
+  );
+  const [textSearch, setTextSearch] = useState(filterConfig.textSearch ?? "");
+  const [coordenates, setCoordenates] = useState(filterConfig.coordenates ?? "");
 
   //This is the string sent to the backend in the params.where field
   const [whereString, setWhereString] = useState();
 
-  const provincesOption = [EMPTY_SELECT, ...getAllOptions("provincia")];
+  const provincesOption = getAllOptions("provincia");
   const currentSituationOptions = getAllOptions("situacion_actual");
   const probableCauseOptions = getAllOptions("causa_probable");
 
@@ -43,12 +58,7 @@ const Filter = ({ setQuery }) => {
       : "";
     let coordenatesString = "";
     if (coordenates) {
-      const numbersArray = coordenates
-        .split(",")
-        .map((str) => parseFloat(str.trim()));
-      const [lat, lon] = numbersArray;
-      const polygon = calculateBoundingBox(lat, lon, 10);
-      const { minLat, minLon, maxLat, maxLon } = polygon;
+      const { minLat, minLon, maxLat, maxLon } = getCoordenates(coordenates);
       coordenatesString = `in_bbox(posicion, ${minLat} , ${minLon}, ${maxLat}, ${maxLon}) `;
     }
     setWhereString(
@@ -83,10 +93,22 @@ const Filter = ({ setQuery }) => {
   const clearFilter = () => {
     setMaxLevelReached("");
     setTextSearch("");
-    setSelectedCurrentSituation(EMPTY_SELECT);
-    setSelectedProbableCause(EMPTY_SELECT);
-    setSelectedProvince(EMPTY_SELECT);
+    setSelectedCurrentSituation(null);
+    setSelectedProbableCause(null);
+    setSelectedProvince(null);
+    setCoordenates("");
     setParams({ ...params, where: DEFAULT_QUERY });
+  };
+
+  const saveFilter = () => {
+    setStorageObject("filterConfig", {
+      selectedProvince: selectedProvince,
+      selectedCurrentSituation: selectedCurrentSituation,
+      selectedProbableCause: selectedProbableCause,
+      coordenates: coordenates,
+      maxLevelReached: maxLevelReached,
+      textSearch: textSearch,
+    });
   };
 
   return (
@@ -201,6 +223,13 @@ const Filter = ({ setQuery }) => {
           onClick={clearFilter}
         >
           LIMPIAR FILTRO
+        </button>
+        <button
+          type="button"
+          className="border-2 rounded p-2 active:scale-95"
+          onClick={saveFilter}
+        >
+          SALVAR FILTRO
         </button>
       </form>
       <nav>

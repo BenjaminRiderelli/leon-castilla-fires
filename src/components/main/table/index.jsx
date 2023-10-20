@@ -1,6 +1,17 @@
 import TableComponent from "./tablecomponent";
+import Spinner from "../../spinner/spinner";
+const Table = ({ data, isLoading }) => {
 
-const Table = ({ data }) => {
+
+
+  if (isLoading) {
+    return (
+      <section className="flex justify-center items-center overflow-scroll w-full h-screen border-2">
+        <Spinner/>
+      </section>
+    );
+  }
+
   if (!data?.length) {
     return (
       <section className="flex justify-center items-center overflow-scroll w-full h-screen border-2">

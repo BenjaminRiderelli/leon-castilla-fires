@@ -19,7 +19,6 @@ export const capitalizeSentence = (str) => {
 };
 
 export const calculateBoundingBox = (latitude, longitude, radiusKm) => {
-
   //AI GENERATED CODE, DONT WANT TO FOOL ANYONE
   //its ment to calculate, the parameters I want to use in the coordenates filter.
   //gives the parameters of a polygon 10km around the given location
@@ -57,4 +56,11 @@ export const calculateBoundingBox = (latitude, longitude, radiusKm) => {
     maxLat: maxLatDeg,
     maxLon: maxLonDeg,
   };
+};
+
+export const getCoordenates = (coordenates) => {
+  const numbersArray = coordenates.split(",").map((str) => parseFloat(str.trim()));
+  const [lat, lon] = numbersArray;
+  const polygon = calculateBoundingBox(lat, lon, 10);
+  return polygon
 };
