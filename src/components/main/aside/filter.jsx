@@ -213,7 +213,7 @@ const Filter = ({ setQuery }) => {
         onClick={(e) => {
           e.preventDefault();
           console.log(whereString);
-          setParams({ ...params, where: whereString });
+          setParams({ ...params, where: whereString, offset:0 });
         }}
       >
         BUSCAR

@@ -31,20 +31,6 @@ const Map = ({ locations }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={initialLocation}>
-            <Popup>
-              {`lat:${initialLocation[0]}`} <br /> {`lon:${initialLocation[1]}`}
-              <button
-                className={style["integration-checklist__copy-button"]}
-                onClick={() => {
-                  const textToCopy = `${initialLocation[0]} , ${initialLocation[1]}`;
-                  navigator.clipboard.writeText(textToCopy);
-                }}
-              >
-                Copiar
-              </button>
-            </Popup>
-          </Marker>
           {locations.map((location) => {
             const { lat, lon } = location;
             return (
