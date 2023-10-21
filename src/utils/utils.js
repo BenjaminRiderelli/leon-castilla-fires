@@ -21,7 +21,7 @@ export const capitalizeSentence = (str) => {
 export const calculateBoundingBox = (latitude, longitude, radiusKm) => {
 
   //AI generated code
-  //this is to ment to calculate, the parameters I want to use in the coordenates filter.
+  //this is to ment to calculate the parameters I want to use in the coordenates filter.
   //gives the parameters of a polygon radiusKm km around the given location
 
   // Earth's radius in kilometers
