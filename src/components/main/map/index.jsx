@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
 import style from "./index.module.css"
 import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
+import {Icon} from "leaflet"
+import marker from "../../../assets/marker-icon.png"
 import "leaflet/dist/leaflet.css";
 import uuid from "react-uuid";
 
 
 
-
+const myIcon = new Icon({
+  iconUrl: marker,
+  iconSize: [20,30]
+ })
+ 
 
 
 const Map = ({ locations }) => {
@@ -39,7 +45,8 @@ const Map = ({ locations }) => {
           {locations.map((location) => {
             const { lat, lon } = location;
             return (
-              <Marker 
+              <Marker
+              icon={myIcon} 
               key={uuid()}
               position={[lat, lon]}>
                 <Popup>
