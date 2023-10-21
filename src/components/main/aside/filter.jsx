@@ -26,20 +26,20 @@ const Filter = ({ setQuery }) => {
   const filterConfig = getStorageObject("filterConfig");
 
   const [selectedProvince, setSelectedProvince] = useState(
-    filterConfig.selectedProvince
+    filterConfig?.selectedProvince
   );
   const [selectedProbableCause, setSelectedProbableCause] = useState(
-    filterConfig.selectedProbableCause
+    filterConfig?.selectedProbableCause
   );
   const [selectedCurrentSituation, setSelectedCurrentSituation] = useState(
-    filterConfig.selectedCurrentSituation
+    filterConfig?.selectedCurrentSituation
   );
   const [maxLevelReached, setMaxLevelReached] = useState(
-    filterConfig.maxLevelReached ?? ""
+    filterConfig?.maxLevelReached ?? ""
   );
   const [textSearch, setTextSearch] = useState(filterConfig.textSearch ?? "");
   const [coordenates, setCoordenates] = useState(
-    filterConfig.coordenates ?? ""
+    filterConfig?.coordenates ?? ""
   );
 
 
