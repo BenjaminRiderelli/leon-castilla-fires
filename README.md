@@ -10,9 +10,7 @@ This web application provides real-time information about forest fires detected 
 ![Map View](./src/assets/map.png)
 ![Table View](./src/assets/table.png)
 
-## Requirements
-
-### Features
+## Features
 
 1. Table with pagination to display the data that the open API provides .
 2. Filters for the data table to allow users to filter information by:
