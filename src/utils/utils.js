@@ -59,9 +59,9 @@ export const calculateBoundingBox = (latitude, longitude, radiusKm) => {
   };
 };
 
-export const getCoordenates = (coordenates) => {
+export const getCoordenates = (coordenates, range) => {
   const numbersArray = coordenates.split(",").map((str) => parseFloat(str.trim()));
   const [lat, lon] = numbersArray;
-  const polygon = calculateBoundingBox(lat, lon, 10);
+  const polygon = calculateBoundingBox(lat, lon, range);
   return polygon
 };

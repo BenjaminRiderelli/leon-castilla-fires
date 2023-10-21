@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { DEFAULT_QUERY } from "../../../utils/constants";
-import {
-  arrayToWhereString,
-  getCoordenates,
-} from "../../../utils/utils";
+import { arrayToWhereString, getCoordenates } from "../../../utils/utils";
 import { getAllOptions } from "../../../hooks/datafetch/fireQuery";
 import Select from "react-tailwindcss-select";
 import { NavLink } from "react-router-dom";
@@ -13,10 +10,9 @@ import {
 } from "../../../utils/localStorageutils";
 
 const Filter = ({ setQuery }) => {
-
   //Querys are made in ODSQL statements.
-  
-  //query params going in the request, 
+
+  //query params going in the request,
   //along with the query string its sending pagination and sorting params.
   const { params, setParams } = setQuery;
   //This is the string sent to the backend in the params.where field
@@ -40,15 +36,13 @@ const Filter = ({ setQuery }) => {
   const [coordenates, setCoordenates] = useState(
     filterConfig?.coordenates ?? ""
   );
-
-
+  const [nearByRange, setNearByRange] = useState(10);
 
   const provincesOption = getAllOptions("provincia");
   const currentSituationOptions = getAllOptions("situacion_actual");
   const probableCauseOptions = getAllOptions("causa_probable");
 
   useEffect(() => {
-
     //Needs more work on the string construction
     const provinceString = selectedProvince?.value
       ? `provincia like "${selectedProvince.value}"`
@@ -67,7 +61,7 @@ const Filter = ({ setQuery }) => {
       : "";
     let coordenatesString = "";
     if (coordenates) {
-      const { minLat, minLon, maxLat, maxLon } = getCoordenates(coordenates);
+      const { minLat, minLon, maxLat, maxLon } = getCoordenates(coordenates, nearByRange);
       coordenatesString = `in_bbox(posicion, ${minLat} , ${minLon}, ${maxLat}, ${maxLon}) `;
     }
     setWhereString(
@@ -87,6 +81,7 @@ const Filter = ({ setQuery }) => {
     selectedProbableCause,
     selectedCurrentSituation,
     maxLevelReached,
+    nearByRange,
     textSearch,
   ]);
 
@@ -141,8 +136,8 @@ const Filter = ({ setQuery }) => {
       </label>
       <label>
         <div className="flex items-baseline gap-4">
-          <p htmlFor="búsqueda_por_coordenadas">Incendios Cercanos - 10km</p>
-          <p htmlFor="búsqueda_por_coordenadas" className="text-xs">
+          <p htmlFor="coordenadas">Incendios Cercanos - {nearByRange}km</p>
+          <p className="text-xs">
             introduzca coordenadas
           </p>
         </div>
@@ -150,10 +145,26 @@ const Filter = ({ setQuery }) => {
           className="border-2  w-full max-w-full p-2"
           placeholder="41.52228899906353 , -5.968164"
           type="text"
-          id="búsqueda_de_texto"
-          name="búsqueda_de_texto"
+          id="coordenadas"
+          name="coordenadas"
           value={coordenates}
           onChange={(e) => handleChange(e, setCoordenates)}
+        />
+      </label>
+      <label>
+        <div className="flex items-baseline gap-4">
+          <p htmlFor="búsqueda_por_coordenadas">introduzca rango</p>
+        </div>
+        <input
+          className="border-2  w-full max-w-full p-2"
+          placeholder="41.52228899906353 , -5.968164"
+          type="range"
+          id="búsqueda_de_texto"
+          name="búsqueda_de_texto"
+          value={nearByRange}
+          min={10}
+          max={50}
+          onChange={(e) => setNearByRange(e.target.value)}
         />
       </label>
       <label className="">
@@ -220,7 +231,7 @@ const Filter = ({ setQuery }) => {
         onClick={(e) => {
           e.preventDefault();
           console.log(whereString);
-          setParams({ ...params, where: whereString, offset:0 });
+          setParams({ ...params, where: whereString, offset: 0 });
         }}
       >
         BUSCAR
