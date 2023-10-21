@@ -37,7 +37,7 @@ const Filter = ({ setQuery }) => {
   const [maxLevelReached, setMaxLevelReached] = useState(
     filterConfig?.maxLevelReached ?? ""
   );
-  const [textSearch, setTextSearch] = useState(filterConfig.textSearch ?? "");
+  const [textSearch, setTextSearch] = useState(filterConfig?.textSearch ?? "");
   const [coordenates, setCoordenates] = useState(
     filterConfig?.coordenates ?? ""
   );
