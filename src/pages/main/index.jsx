@@ -2,20 +2,17 @@ import { useState } from "react";
 import { useAllFiresQuery } from "../../hooks/datafetch/fireQuery";
 import NotFound from "../../components/notfound";
 import { DEFAULT_QUERY } from "../../utils/constants";
-import Filter from "../../components/main/filter";
+import Aside from "../../components/main/aside";
 import Table from "../../components/main/table";
-
 import Map from "../../components/main/map";
 import { Route, Routes } from "react-router-dom";
-
-const exampleGeo =
-  "in_bbox(posicion, 41.7632789990626, -3.4662480000000007, 42.7632789990626, -4.4662480000000007)";
 
 const MainPage = () => {
   const [params, setParams] = useState({
     limit: 100,
     where: DEFAULT_QUERY,
     order_by: "fecha_del_parte DESC",
+    offset:0
   });
 
   const onSuccess = (payload) => {
@@ -36,10 +33,11 @@ const MainPage = () => {
   const results = data?.data.results;
   const locations =
     results?.map((fire) => fire.posicion).filter((location) => location) ?? [];
+  const totalCount = data?.data.total_count;
 
   return (
     <section className="flex flex-col md:flex-row gap-8 md:gap-0 h-screen overflow-hidden">
-      <Filter setQuery={{ params, setParams }} />
+      <Aside setQuery={{ params, setParams }} totalCount={totalCount} />
       <Routes>
         <Route
           exact
