@@ -14,8 +14,15 @@ import {
 } from "../../../utils/localStorageutils";
 
 const Filter = ({ setQuery }) => {
-  //query params going in the request
+
+  //Querys are made in ODSQL statements.
+  
+  //query params going in the request, 
+  //along with the query string its sending pagination and sorting params.
   const { params, setParams } = setQuery;
+  //This is the string sent to the backend in the params.where field
+  const [whereString, setWhereString] = useState();
+
   const filterConfig = getStorageObject("filterConfig");
 
   const [selectedProvince, setSelectedProvince] = useState(
@@ -35,14 +42,15 @@ const Filter = ({ setQuery }) => {
     filterConfig.coordenates ?? ""
   );
 
-  //This is the string sent to the backend in the params.where field
-  const [whereString, setWhereString] = useState();
+
 
   const provincesOption = getAllOptions("provincia");
   const currentSituationOptions = getAllOptions("situacion_actual");
   const probableCauseOptions = getAllOptions("causa_probable");
 
   useEffect(() => {
+
+    //Needs more work on the string construction
     const provinceString = selectedProvince?.value
       ? `provincia like "${selectedProvince.value}"`
       : "";
