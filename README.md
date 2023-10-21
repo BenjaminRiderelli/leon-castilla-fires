@@ -3,6 +3,7 @@
 ## Description
 
 This web application provides real-time information about forest fires detected in Castilla y León, Spain, during the last two years. It utilizes an open data API from [Datos Abiertos de la Junta de Castilla y León](https://analisis.datosabiertos.jcyl.es/api/explore/v2.1/console).
+- [Click here to see the live version](https://incendioscastillaleon.netlify.app/)
 
 
 
