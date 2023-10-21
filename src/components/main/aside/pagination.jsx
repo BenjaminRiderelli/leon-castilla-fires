@@ -1,5 +1,3 @@
-import {useRef} from "react";
-
 const Pagination = ({ setQuery, totalCount }) => {
   const { params, setParams } = setQuery;
 

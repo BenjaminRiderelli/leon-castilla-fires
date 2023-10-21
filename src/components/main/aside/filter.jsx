@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { DEFAULT_QUERY } from "../../../utils/constants";
 import {
   arrayToWhereString,
-  calculateBoundingBox,
   getCoordenates,
 } from "../../../utils/utils";
 import { getAllOptions } from "../../../hooks/datafetch/fireQuery";
