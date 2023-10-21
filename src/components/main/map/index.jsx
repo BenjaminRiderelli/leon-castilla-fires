@@ -4,6 +4,11 @@ import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import uuid from "react-uuid";
 
+
+
+
+
+
 const Map = ({ locations }) => {
   const [initialLocation, setInitialLocation] = useState(null);
 
