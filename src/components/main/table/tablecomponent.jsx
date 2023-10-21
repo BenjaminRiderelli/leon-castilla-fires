@@ -21,7 +21,7 @@ const TableComponent = ({ data }) => {
             return <TD data={data.join(", ")} key={uuid()} />;
           }
           if (key === "posicion") {
-            const info = data ? `${data.lon} , ${data.lat}` : "";
+            const info = data ? `${data.lat}, ${data.lon}`  : "";
             return <TD data={info} key={uuid()} />;
           }
           return <TD data={data} key={uuid()} />;
